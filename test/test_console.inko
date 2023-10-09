@@ -1,0 +1,167 @@
+import std::stdio::(STDOUT)
+import std::test::Tests
+
+import console::Console
+import console::ansi
+
+fn pub tests(t: mut Tests) {
+  t.test('Can construct console') fn (t) {
+    let console = Console.new
+  }
+
+  t.test('Can get size') fn (t) {
+    let console = Console.new
+    t.greater(console.size.width, 0)
+    t.greater(console.size.height, 0)
+  }
+
+  t.fork(
+    'Can set red foreground',
+    child: fn {
+      let console = Console.new
+
+      console.foreground(ansi::Color.new(255, 0, 0))
+    },
+    test: fn(t, process) {
+      t.equal(process.spawn.stdout, "\e[38;2;255;0;0m")
+    }
+  )
+
+  t.fork(
+    'Can set green background',
+    child: fn {
+      let console = Console.new
+  
+      console.background(ansi::Color.new(0, 255, 0))
+		},
+		test: fn(t, process) {
+      t.equal(process.spawn.stdout, "\e[48;2;0;255;0m")
+    }
+	)
+
+  t.fork(
+    'Can set underline',
+    child: fn {
+      let console = Console.new
+  
+      console.underline(ansi::Underline.Straight, ansi::Color.new(255, 0, 0))
+		},
+		test: fn(t, process) {
+      t.equal(process.spawn.stdout, "\e[58;2;255;0;0;4m")
+    }
+	)
+
+  t.fork(
+    'Can set curly underline',
+    child: fn {
+      let console = Console.new
+  
+      console.underline(ansi::Underline.Curly, ansi::Color.new(255, 0, 0))
+		},
+		test: fn(t, process) {
+      t.equal(process.spawn.stdout, "\e[58;2;255;0;0;4:3m")
+    }
+	)
+
+  t.fork(
+    'Can set bold',
+    child: fn {
+      let console = Console.new
+  
+      console.brightness(ansi::Brightness.Bold)
+		},
+		test: fn(t, process) {
+      t.equal(process.spawn.stdout, "\e[1m")
+    }
+	)
+
+  t.fork(
+    'Can set dim',
+    child: fn {
+      let console = Console.new
+  
+      console.brightness(ansi::Brightness.Dim)
+		},
+		test: fn(t, process) {
+      t.equal(process.spawn.stdout, "\e[2m")
+    }
+	)
+
+
+  t.fork(
+    'Can set italic',
+    child: fn {
+      let console = Console.new
+  
+      console.style(ansi::Style.Italic(true))
+		},
+		test: fn(t, process) {
+      t.equal(process.spawn.stdout, "\e[3m")
+    }
+	)
+
+
+  t.fork(
+    'Can set inverted',
+    child: fn {
+      let console = Console.new
+  
+      console.style(ansi::Style.Invert(true))
+		},
+		test: fn(t, process) {
+      t.equal(process.spawn.stdout, "\e[7m")
+    }
+	)
+
+	
+  t.fork(
+    'Can set strike',
+    child: fn {
+      let console = Console.new
+  
+      console.style(ansi::Style.Strike(true))
+		},
+		test: fn(t, process) {
+      t.equal(process.spawn.stdout, "\e[9m")
+    }
+	)
+	
+
+  t.test('Scratch') fn (t) {
+  let console=Console.new
+
+	console.background(ansi::Color.new(255, 0, 0))
+	console.foreground(ansi::Color.new(0, 255, 0))
+	console.print("Hello World")
+
+	console.reset
+	console.print("Hello World")
+
+	console.brightness(ansi::Brightness.Bold)
+	console.print("Hello World")
+
+	console.reset
+	console.brightness(ansi::Brightness.Dim)
+	console.print("Hello World")
+
+	console.reset
+	console.style(ansi::Style.Italic(true))
+	console.print("Hello World")
+
+	console.reset
+	console.underline(ansi::Underline.Curly, ansi::Color.new(23, 48, 200))
+	console.print("Hello World")
+
+	console.reset
+	console.style(ansi::Style.Invert(true))
+	console.print("Hello World")
+
+	console.reset
+	console.style(ansi::Style.strike)
+	console.print("Hello World")
+
+
+
+	console.reset
+  }
+}

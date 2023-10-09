@@ -1,0 +1,95 @@
+import std::sys::(Command, Stream)
+import std::io::(Write, Error)
+import std::stdio::(STDOUT)
+
+import console::ansi
+
+class pub ConsoleDimensions {
+  let pub @width: Int
+  let pub @height: Int
+}
+
+class pub Console {
+  let @stdout: STDOUT
+  fn pub static new -> Console {
+    Console {
+      @stdout=STDOUT.new
+    }
+  }
+
+  # Calls out to the stty command to get terminal size.
+  #
+  # Not sure any better way to do it.
+  fn pub size -> ConsoleDimensions {
+    let output = ByteArray.new
+    let command = Command.new('stty')
+    command.argument('size')
+    command.stdout(Stream.Piped)
+    let proc = command.spawn.unwrap
+    proc.wait.unwrap
+    proc.stdout.read_all(output).unwrap
+
+    let dimensions = output.drain_to_string.split(' ')
+    let width_string = dimensions.next.unwrap_or("80").trim
+    let height_string = dimensions.next.unwrap_or("25").trim
+
+    let width = Int.from_base10(width_string).unwrap
+    let height = Int.from_base10(height_string).unwrap
+
+    ConsoleDimensions {
+      @width = width,
+      @height = height
+    }
+  }
+
+  fn pub mut reset() {
+    self.escape("0")
+  }
+
+  # Set the foreground color for subsequent writes to the console.
+  fn pub mut foreground(color: ansi::Color) {
+    self.escape("38;{color.to_ansi}")  
+  }
+  
+  # Set the background color for subsequent writes to the console.
+  fn pub mut background(color: ansi::Color) {
+    self.escape("48;{color.to_ansi}")  
+  }
+
+	# Set the Underline style and color
+	fn pub mut underline(style: ansi::Underline, color: ansi::Color) {
+	  self.escape("58;{color.to_ansi};{style.to_ansi}")
+	}
+
+	# Set bold, dim, or normal intensity
+	# Note this false trichotomy is kind of a legacy from CRT days
+	fn pub mut brightness(style: ansi::Brightness) {
+		self.escape(style.to_ansi)
+	}
+
+	# Set italic, inverted, or strike style
+	fn pub mut style(style: ansi::Style) {
+		self.escape(style.to_ansi)
+	}
+
+  fn pub mut escape(string: String) {
+    self.stdout.write_string("\e[{string}m")
+  }
+
+}
+
+
+impl Write for Console {
+  fn pub mut write_bytes(bytes: ref ByteArray) -> Result[Int, Error] {
+		self.stdout.write_bytes(bytes)
+	}
+
+	fn pub mut write_string(string: String) -> Result[Int, Error] {
+		self.stdout.write_string(string)
+	}
+
+	fn pub mut flush() -> Result[Nil, Never] {
+		self.stdout.flush()
+	}
+	
+}

@@ -1,0 +1,112 @@
+
+
+class pub Color {
+  let @red: Int
+  let @green: Int
+  let @blue: Int
+
+  fn pub static new (red: Int, green: Int, blue: Int) -> Color {
+    if red > 255 or green > 255 or blue > 255 {
+      panic("red, green, and blue must be less than 256")
+    }
+    if red < 0 or green < 0 or blue < 0 {
+      panic("red, green, and blue must be zero or more")
+    }
+
+    Color {
+      @red = red,
+      @green = green,
+      @blue = blue
+    }
+  }
+
+  # Prefix with 38; 48; or 58; for fg, bg, or underline color
+  fn pub to_ansi() -> String {
+        return "2;{@red};{@green};{@blue}"
+  }
+}
+
+# Some modern terminals support multiple underline styles
+# extending the 4 escape code with a :.
+class pub enum Underline {
+  case None
+  case Straight
+  case Double
+  case Curly
+  case Dotted
+  case Dashed
+
+  fn pub to_ansi() -> String {
+    match self {
+      # Note: 4:0 is the extended style for no underline, but older terminals
+      # expect 24 with no modifier as "underline off"
+      case None -> "24"
+      # Note: 4:1 is the extended style for straight, but older terminals
+      # have supported 4 with no modifier as straight underline for years
+      case Straight -> "4"
+      # Note: 4:2 is the extended style for double underline, but
+      # some older terminals also support the alternative escape code 21.
+      # Unfortunately, some of them also think of 21 as "bold off"
+      case Double -> "21"
+      case Curly -> "4:3"
+      case Dotted -> "4:4"
+      case Dashed -> "4:5"
+    }
+  }
+}
+
+
+class pub enum Brightness {
+  case Bold
+  case Dim
+  case Normal
+
+  fn pub to_ansi() -> String {
+    match self {
+      case Bold -> "1"
+      case Dim -> "2"
+      case Normal -> "22"
+    }
+  }
+}
+
+class pub enum Style {
+  case Italic(Bool)
+  case Invert(Bool)
+  case Strike(Bool)
+
+  fn pub to_ansi() -> String {
+    match self {
+      case Italic(true) -> "3"
+      case Italic(false) -> "23"
+      case Invert(true) -> "7"
+      case Invert(false) -> "27"
+      case Strike(true) -> "9"
+      case Strike(false) -> "29"
+    }
+  }
+
+  fn pub static italic -> Style {
+    Style.Italic(true)
+  }
+
+  fn pub static invert -> Style {
+    Style.Invert(true)
+  }
+
+  fn pub static strike -> Style {
+    Style.Strike(true)
+  }
+
+  fn pub static italic_off -> Style {
+    Style.Italic(false)
+  }
+
+  fn pub static invert_off -> Style {
+    Style.Invert(false)
+  }
+
+  fn pub static strike_off -> Style {
+    Style.Strike(false)
+  }
+}
