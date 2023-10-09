@@ -72,10 +72,20 @@ class pub Console {
 		self.escape(style.to_ansi)
 	}
 
+	# Issue a cursor control sequence
+	fn pub mut move(cursor: ansi::Cursor) {
+		self.stdout.write_string("\e[{cursor.to_ansi}")
+	}
+
+	# Issue a clear screen control sequence
+	fn pub mut clear(clear: ansi::Clear) {
+		self.escape(clear.to_ansi)
+	}
+
+	# Issue a Select Graphic Rendition escape sequence
   fn pub mut escape(string: String) {
     self.stdout.write_string("\e[{string}m")
   }
-
 }
 
 

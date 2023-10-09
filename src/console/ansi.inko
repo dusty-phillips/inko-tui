@@ -110,3 +110,39 @@ class pub enum Style {
     Style.Strike(false)
   }
 }
+
+class pub enum Cursor {
+  case Up(Int)
+  case Down(Int)
+  case Left(Int)
+  case Right(Int)
+  case MoveToColumn(Int)
+  case MoveTo(Int, Int)
+
+  fn pub to_ansi() -> String {
+    match self {
+      case Up(count) -> "{count}A"
+      case Down(count) -> "{count}B"
+      case Right(count) -> "{count}C"
+      case Left(count) -> "{count}D"
+      case MoveToColumn(count) -> "{count+1}G"
+      case MoveTo(row, column) -> "{row+1};{column+1}H"
+    }
+  }
+}
+
+class pub enum Clear {
+  case ToStart
+  case ToEnd
+  case Screen
+  case Scrollback
+
+  fn pub to_ansi() -> String {
+    match self {
+      case ToEnd -> "0J"
+      case ToStart -> "1J"
+      case Screen -> "2J"
+      case Scrollback -> "3J"
+    }
+  }
+}

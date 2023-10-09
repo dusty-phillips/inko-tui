@@ -160,6 +160,15 @@ fn pub tests(t: mut Tests) {
 	console.style(ansi::Style.strike)
 	console.print("Hello World")
 
+	console.reset
+	console.clear(ansi::Clear.Screen)
+
+	console.move(ansi::Cursor.Down(3))
+	console.write_string("FOOO")
+
+  console.move(ansi::Cursor.MoveTo(0, 0))
+	console.write_string("GOOOP")
+
 
 
 	console.reset
