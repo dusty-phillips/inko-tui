@@ -1,0 +1,11 @@
+import tui::(Tui)
+import tui::align::(Alignment)
+
+class async Main {
+ fn async main {
+  let tui = Tui.new
+  tui.clearScreen
+  tui.panel(5, 10, 20, 20, "Hello\nWorld\nFoo\nBar", Alignment.Center)
+  tui.panel(5, 32, 20, 20, "Snoop\nCheat\nPray\nSnort", Alignment.Right)
+ }
+}

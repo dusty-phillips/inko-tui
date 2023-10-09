@@ -1,16 +1,20 @@
 import std::env
 import std::test::(Filter, Tests)
 import test_console
+import test_align
+import test_tui
 
 class async Main {
-	fn async main {
-		let tests = Tests.new
+  fn async main {
+    let tests = Tests.new
 
-		test_console.tests(tests)
+    test_console.tests(tests)
+    test_align.tests(tests)
+    test_tui.tests(tests)
 
-		tests.filter = Filter.from_string(env.arguments.opt(0).unwrap_or(''))
-		tests.run
-	}
+    tests.filter = Filter.from_string(env.arguments.opt(0).unwrap_or(''))
+    tests.run
+  }
 }
 
 

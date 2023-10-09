@@ -11,6 +11,7 @@ class pub ConsoleDimensions {
 
 class pub Console {
   let @stdout: STDOUT
+
   fn pub static new -> Console {
     Console {
       @stdout=STDOUT.new
@@ -56,33 +57,33 @@ class pub Console {
     self.escape("48;{color.to_ansi}")  
   }
 
-	# Set the Underline style and color
-	fn pub mut underline(style: ansi::Underline, color: ansi::Color) {
-	  self.escape("58;{color.to_ansi};{style.to_ansi}")
-	}
+  # Set the Underline style and color
+  fn pub mut underline(style: ansi::Underline, color: ansi::Color) {
+    self.escape("58;{color.to_ansi};{style.to_ansi}")
+  }
 
-	# Set bold, dim, or normal intensity
-	# Note this false trichotomy is kind of a legacy from CRT days
-	fn pub mut brightness(style: ansi::Brightness) {
-		self.escape(style.to_ansi)
-	}
+  # Set bold, dim, or normal intensity
+  # Note this false trichotomy is kind of a legacy from CRT days
+  fn pub mut brightness(style: ansi::Brightness) {
+    self.escape(style.to_ansi)
+  }
 
-	# Set italic, inverted, or strike style
-	fn pub mut style(style: ansi::Style) {
-		self.escape(style.to_ansi)
-	}
+  # Set italic, inverted, or strike style
+  fn pub mut style(style: ansi::Style) {
+    self.escape(style.to_ansi)
+  }
 
-	# Issue a cursor control sequence
-	fn pub mut move(cursor: ansi::Cursor) {
-		self.stdout.write_string("\e[{cursor.to_ansi}")
-	}
+  # Issue a cursor control sequence
+  fn pub mut move(cursor: ansi::Cursor) {
+    self.stdout.write_string("\e[{cursor.to_ansi}")
+  }
 
-	# Issue a clear screen control sequence
-	fn pub mut clear(clear: ansi::Clear) {
-		self.escape(clear.to_ansi)
-	}
+  # Issue a clear screen control sequence
+  fn pub mut clear(clear: ansi::Clear) {
+    self.stdout.write_string("\e[{clear.to_ansi}")
+  }
 
-	# Issue a Select Graphic Rendition escape sequence
+  # Issue a Select Graphic Rendition escape sequence
   fn pub mut escape(string: String) {
     self.stdout.write_string("\e[{string}m")
   }
@@ -91,15 +92,16 @@ class pub Console {
 
 impl Write for Console {
   fn pub mut write_bytes(bytes: ref ByteArray) -> Result[Int, Error] {
-		self.stdout.write_bytes(bytes)
-	}
+    self.stdout.write_bytes(bytes)
+  }
 
-	fn pub mut write_string(string: String) -> Result[Int, Error] {
-		self.stdout.write_string(string)
-	}
+  fn pub mut write_string(string: String) -> Result[Int, Error] {
+    self.stdout.write_string(string)
+  }
 
-	fn pub mut flush() -> Result[Nil, Never] {
-		self.stdout.flush()
-	}
-	
+  fn pub mut flush() -> Result[Nil, Never] {
+    self.stdout.flush()
+  }
+  
 }
+  

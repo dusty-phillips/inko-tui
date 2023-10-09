@@ -1,0 +1,70 @@
+
+import std::test::Tests
+import tui::align::(Alignment)
+
+fn pub tests(t: mut Tests) {
+  t.test('Can align left single line') fn (t) {
+    let aligned = Alignment.Left.align("Hello World", 15, "#")
+    t.equal(aligned, "Hello World####")
+  }
+
+  t.test('Can align left multiple lines') fn (t) {
+    let aligned=Alignment.Left.align("Hello World
+Hello
+Hi", 15, "#")
+
+    t.equal(aligned, "Hello World####
+Hello##########
+Hi#############")
+  }
+
+  t.test("No padding if align left too short") fn (t) {
+    let aligned = Alignment.Left.align("Hello World", 5, "#")
+
+    t.equal(aligned, "Hello World")
+  }
+  
+
+  t.test('Can align right single line') fn (t) {
+    let aligned = Alignment.Right.align("Hello World", 15, "#")
+    t.equal(aligned, "####Hello World")
+  }
+
+  t.test('Can align right multiple lines') fn (t) {
+    let aligned=Alignment.Right.align("Hello World
+Hello
+Hi", 15, "#")
+
+    t.equal(aligned, "####Hello World
+##########Hello
+#############Hi")
+  }
+
+  t.test("No padding if align right too short") fn (t) {
+    let aligned = Alignment.Right.align("Hello World", 5, "#")
+
+    t.equal(aligned, "Hello World")
+  }
+
+  t.test('Can align center single line') fn (t) {
+    let aligned = Alignment.Center.align("Hello World", 15, "#")
+    t.equal(aligned, "##Hello World##")
+  }
+
+  t.test('Can align center multiple lines') fn (t) {
+    let aligned=Alignment.Center.align("Hello World
+Hello
+Hi", 15, "#")
+
+    t.equal(aligned, "##Hello World##
+#####Hello#####
+#######Hi######")
+  }
+
+  t.test("No padding if align center too short") fn (t) {
+    let aligned = Alignment.Center.align("Hello World", 5, "#")
+
+    t.equal(aligned, "Hello World")
+  }
+  
+}

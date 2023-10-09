@@ -1,0 +1,98 @@
+import std::string::(StringBuffer)
+
+class pub enum Alignment {
+  case Left
+  case Right
+  case Center
+
+  fn pub align(string: String, width: Int, fill_char: String) -> String {
+    match self {
+      case Left -> self.left(string, width, fill_char)
+      case Right -> self.right(string, width, fill_char)
+      case Center -> self.center(string, width, fill_char)
+    }
+  }
+    
+  # Align the lines of string to the left so that all lines
+  # are at least `width` characters in length.
+  # If any lines are longer than width they will spill over.
+  fn left(string: String, width: Int, fill_char: String) -> String {
+    if fill_char.characters.count != 1 {
+      panic("Padding char must be exactly one character")
+    }
+
+    let buffer = StringBuffer.new
+
+    string.split("\n").each fn (line) {
+      buffer.push(line.pad_end(fill_char, width))
+      buffer.push("\n")
+    }
+
+    let padded = buffer.to_string
+    if string.ends_with?("\n") {
+      padded
+    } else {
+      padded.strip_suffix("\n")
+    }
+ 
+  }
+
+
+  # Align the lines of string to the right so that all lines
+  # are at least `width` characters in length.
+  # If any lines are longer than width they will spill over.
+  fn right(string: String, width: Int, fill_char: String) -> String {
+    if fill_char.characters.count != 1 {
+      panic("Padding char must be exactly one character")
+    }
+
+    let buffer = StringBuffer.new
+
+    string.split("\n").each fn (line) {
+      buffer.push(line.pad_start(fill_char, width))
+      buffer.push("\n")
+    }
+
+    let padded = buffer.to_string
+    if string.ends_with?("\n") {
+      padded
+    } else {
+      padded.strip_suffix("\n")
+    }
+  }
+
+  # Align the lines of string to the center so that all lines are at least `width`
+  # characters in length.
+  # if any lines are longer than width, they will be left aligned
+  # and spill over.
+
+  fn center(string: String, width: Int, fill_char: String) -> String {
+    if fill_char.characters.count != 1 {
+      panic("Padding char must be exactly one character")
+    }
+
+    let buffer = StringBuffer.new
+
+    string.split("\n").each fn (line) {
+      let length = line.characters.count
+      if (width < length) {
+        buffer.push(line)
+      } else {
+      
+        let fill_float = (width - length).to_float / 2.0
+        fill_float.ceil.to_int.times fn (_) {buffer.push(fill_char)}
+        buffer.push(line)
+        fill_float.floor.to_int.times fn (_) {buffer.push(fill_char)}
+      }
+
+      buffer.push("\n")
+    }
+
+    let padded = buffer.to_string
+    if string.ends_with?("\n") {
+      padded
+    } else {
+      padded.strip_suffix("\n")
+    }
+  }
+}
