@@ -37,7 +37,7 @@ class pub Tui {
 
     # TODO panic if the panel would not be on the screen
 
-    let padding_rows_float = (width - line_count - 2).to_float / 2.0
+    let padding_rows_float = (height - line_count - 2).to_float / 2.0
     let padding_rows_above = padding_rows_float.floor.to_int
     let padding_rows_below = padding_rows_float.ceil.to_int
 

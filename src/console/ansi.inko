@@ -20,6 +20,10 @@ class pub Color {
     }
   }
 
+  fn pub static black() -> Color {
+    Color.new(0, 0, 0)
+  }
+
   # Prefix with 38; 48; or 58; for fg, bg, or underline color
   fn pub to_ansi() -> String {
         return "2;{@red};{@green};{@blue}"
