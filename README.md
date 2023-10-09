@@ -34,10 +34,10 @@ class async Main {
   fn async main {
     let console = Console.new
   }
-}```
+}
+```
 
 
-![Color screenshot](screenshots/console-color.png)
 
 ### Colors
 
@@ -58,6 +58,8 @@ class async Main {
   }
 }
 ```
+
+![Color screenshot](screenshots/console-color.png)
 
 The console currently ONLY supports true colour (RGB) values. The traditional
 4/8/16/256-bit palettes aren't currently supported. This is partially because
@@ -81,7 +83,8 @@ class async Main {
     console.underline(Underline.Curly, Color.new(220, 194, 162))
     console.print("Hello World")
   }
-}```
+}
+```
 
 ![Underline screenshot](screenshots/console-underline.png)
 
@@ -136,8 +139,8 @@ class async Main {
     console.style(Style.strike)
     console.print("Hello World")
   }
-}```
-
+}
+```
 
 ![Styles Screenshot](screenshots/console-styles.png)
 
@@ -211,7 +214,8 @@ class async Main {
     term.clearScreen
     term.panel(5, 10, 20, 16, "Hello\nWorld", Alignment.Center)
   }
-}```
+}
+```
 
 ![Tui Screenshot](screenshots/tui-panel.png)
 
