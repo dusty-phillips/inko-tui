@@ -1,4 +1,5 @@
 import std.string.(StringBuffer)
+import std.stdio.STDOUT
 
 class pub enum Alignment {
   case Left
@@ -12,7 +13,7 @@ class pub enum Alignment {
       case Center -> self.center(string, width, fill_char)
     }
   }
-    
+
   # Align the lines of string to the left so that all lines
   # are at least `width` characters in length.
   # If any lines are longer than width they will spill over.
@@ -94,5 +95,29 @@ class pub enum Alignment {
     } else {
       padded.strip_suffix("\n")
     }
+  }
+}
+
+# Ensure the given string fits into the specified bounding box,
+# unceremoniously cropping any characters that don't fit.
+# No fill characters are added.
+fn pub truncate(string: String, width: Int, height: Int) -> String {
+  let lines = string.split("\n") 
+  let buffer = StringBuffer.new
+
+  let truncated = lines.chunks(height).next.unwrap
+
+
+
+  truncated.iter.each fn (line) {
+    buffer.push(line.substring(0, width))
+    buffer.push("\n")
+  }
+
+  let padded = buffer.to_string
+  if string.ends_with?("\n") {
+    padded
+  } else {
+    padded.strip_suffix("\n")
   }
 }

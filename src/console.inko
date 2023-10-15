@@ -32,8 +32,8 @@ class pub Console {
     proc.stdout.read_all(output).unwrap
 
     let dimensions = output.drain_to_string.split(' ')
-    let width_string = dimensions.next.unwrap_or("80").trim
     let height_string = dimensions.next.unwrap_or("25").trim
+    let width_string = dimensions.next.unwrap_or("80").trim
 
     let width = Int.parse(width_string, Format.Decimal).unwrap
     let height = Int.parse(height_string, Format.Decimal).unwrap

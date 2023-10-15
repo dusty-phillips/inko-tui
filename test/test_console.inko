@@ -1,8 +1,8 @@
-import std::stdio::(STDOUT)
-import std::test::Tests
+import std.stdio.(STDOUT)
+import std.test.Tests
 
-import console::Console
-import console::ansi
+import console.Console
+import console.ansi
 
 fn pub tests(t: mut Tests) {
   t.test('Can construct console') fn (t) {
@@ -20,7 +20,7 @@ fn pub tests(t: mut Tests) {
     child: fn {
       let console = Console.new
 
-      console.foreground(ansi::Color.new(255, 0, 0))
+      console.foreground(ansi.Color.new(255, 0, 0))
     },
     test: fn(t, process) {
       t.equal(process.spawn.stdout, "\e[38;2;255;0;0m")
@@ -32,7 +32,7 @@ fn pub tests(t: mut Tests) {
     child: fn {
       let console = Console.new
   
-      console.background(ansi::Color.new(0, 255, 0))
+      console.background(ansi.Color.new(0, 255, 0))
     },
     test: fn(t, process) {
       t.equal(process.spawn.stdout, "\e[48;2;0;255;0m")
@@ -44,7 +44,7 @@ fn pub tests(t: mut Tests) {
     child: fn {
       let console = Console.new
   
-      console.underline(ansi::Underline.Straight, ansi::Color.new(255, 0, 0))
+      console.underline(ansi.Underline.Straight, ansi.Color.new(255, 0, 0))
     },
     test: fn(t, process) {
       t.equal(process.spawn.stdout, "\e[58;2;255;0;0;4m")
@@ -56,7 +56,7 @@ fn pub tests(t: mut Tests) {
     child: fn {
       let console = Console.new
   
-      console.underline(ansi::Underline.Curly, ansi::Color.new(255, 0, 0))
+      console.underline(ansi.Underline.Curly, ansi.Color.new(255, 0, 0))
     },
     test: fn(t, process) {
       t.equal(process.spawn.stdout, "\e[58;2;255;0;0;4:3m")
@@ -68,7 +68,7 @@ fn pub tests(t: mut Tests) {
     child: fn {
       let console = Console.new
   
-      console.brightness(ansi::Brightness.Bold)
+      console.brightness(ansi.Brightness.Bold)
     },
     test: fn(t, process) {
       t.equal(process.spawn.stdout, "\e[1m")
@@ -80,7 +80,7 @@ fn pub tests(t: mut Tests) {
     child: fn {
       let console = Console.new
   
-      console.brightness(ansi::Brightness.Dim)
+      console.brightness(ansi.Brightness.Dim)
     },
     test: fn(t, process) {
       t.equal(process.spawn.stdout, "\e[2m")
@@ -93,7 +93,7 @@ fn pub tests(t: mut Tests) {
     child: fn {
       let console = Console.new
   
-      console.style(ansi::Style.Italic(true))
+      console.style(ansi.Style.Italic(true))
     },
     test: fn(t, process) {
       t.equal(process.spawn.stdout, "\e[3m")
@@ -106,7 +106,7 @@ fn pub tests(t: mut Tests) {
     child: fn {
       let console = Console.new
   
-      console.style(ansi::Style.Invert(true))
+      console.style(ansi.Style.Invert(true))
     },
     test: fn(t, process) {
       t.equal(process.spawn.stdout, "\e[7m")
@@ -119,7 +119,7 @@ fn pub tests(t: mut Tests) {
     child: fn {
       let console = Console.new
   
-      console.style(ansi::Style.Strike(true))
+      console.style(ansi.Style.Strike(true))
     },
     test: fn(t, process) {
       t.equal(process.spawn.stdout, "\e[9m")

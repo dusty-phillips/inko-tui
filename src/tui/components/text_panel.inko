@@ -1,0 +1,69 @@
+import tui.align
+import tui.component(Component, RenderContext, Props)
+import console.ansi.(Cursor)
+
+# A panel that centres some text on a border. 
+
+class pub TextPanelProps {
+  let pub @text: String
+  let pub @alignment: align.Alignment
+}
+
+impl Props for TextPanelProps { }
+
+class pub TextPanel {
+  fn pub static new() -> TextPanel {
+    TextPanel {}
+  }
+}
+
+impl Component[TextPanelProps] for TextPanel {
+  fn pub render(context: mut RenderContext, props: ref TextPanelProps) {
+    if context.height <= 0 or context.width <= 0 {
+      return
+    }
+
+    let text = align.truncate(props.text, context.width - 2, context.height - 2)
+    let aligned = props.alignment.align(text, context.width - 2, " ")
+    let line_count = aligned.split("\n").count
+
+    
+    let padding_rows_float = (context.height - line_count - 2).to_float / 2.0
+    let padding_rows_above = padding_rows_float.floor.to_int
+    let padding_rows_below = padding_rows_float.ceil.to_int
+
+    context.console.move(Cursor.MoveTo(context.x,context. y))
+
+    context.console.write_string("┌")
+    (context.width - 2).times fn (_) { context.console.write_string("─") }
+    context.console.write_string("┐")
+    context.console.move(Cursor.MoveTo(context.x + 1, context.y))
+
+    padding_rows_above.times fn (incr) {
+      context.console.write_string("│")
+      context.console.move(Cursor.Right(context.width - 2))
+      context.console.write_string("│")
+      context.console.move(Cursor.MoveTo(context.x + 1 + incr, context.y))
+    }
+
+    let mut count = 0
+    aligned.split("\n").each_with_index fn (index, line) {
+      context.console.write_string("│")
+      context.console.write_string(line)
+      context.console.write_string("│")
+      context.console.move(Cursor.MoveTo(context.x + 1 + padding_rows_above + index, context.y))
+    }
+
+    padding_rows_below.times fn (incr) {
+      context.console.write_string("│")
+      context.console.move(Cursor.Right(context.width - 2))
+      context.console.write_string("│")
+      context.console.move(Cursor.MoveTo(context.x + context.height - padding_rows_below + incr - 1, context.y))
+    }
+
+    context.console.write_string("└")
+    (context.width - 2).times fn (_) { context.console.write_string("─") }
+    context.console.write_string("┘")
+
+  }
+}

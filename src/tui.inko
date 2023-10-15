@@ -27,68 +27,6 @@ class pub Tui {
       @console = @console
     }
     component.render(context, props)
-  }
-
-  # Draw a panel 
-  #
-  # Deprecated; this will be moved to a component class soon.
-  fn pub mut panel(x: Int, y: Int, width: Int, height: Int, contents: String, alignment: Alignment) {
-    let line_count = contents.split("\n").count
-    let longest_line_length = contents.split("\n").reduce(0) fn (longest, line) {
-      let length = line.chars.count
-      if (length > longest) {
-        length
-      } else {
-        longest
-      }
-    }
-    if longest_line_length > (width - 2) {
-      panic("Panel received contents that won't fit")
-    }
-
-    if line_count > (height - 2) {
-      panic("Panel received contents that won't fit")
-    }
-
-    # TODO panic if the panel would not be on the screen
-
-    let padding_rows_float = (height - line_count - 2).to_float / 2.0
-    let padding_rows_above = padding_rows_float.floor.to_int
-    let padding_rows_below = padding_rows_float.ceil.to_int
-
-    @console.move(Cursor.MoveTo(x, y))
-
-    let aligned = alignment.align(contents, width - 2, " ")    
-
-    @console.write_string("┌")
-    (width - 2).times fn (_) { @console.write_string("─") }
-    @console.write_string("┐")
-    @console.move(Cursor.MoveTo(x + 1, y))
-
-    padding_rows_above.times fn (incr) {
-      @console.write_string("│")
-      @console.move(Cursor.Right(width - 2))
-      @console.write_string("│")
-      @console.move(Cursor.MoveTo(x + 1 + incr, y))
-    }
-
-    let mut count = 0
-    aligned.split("\n").each_with_index fn (index, line) {
-      @console.write_string("│")
-      @console.write_string(line)
-      @console.write_string("│")
-      @console.move(Cursor.MoveTo(x + 1 + padding_rows_above + index, y))
-    }
-
-    padding_rows_below.times fn (incr) {
-      @console.write_string("│")
-      @console.move(Cursor.Right(width - 2))
-      @console.write_string("│")
-      @console.move(Cursor.MoveTo(x + height - padding_rows_below + incr - 1, y))
-    }
-
-    @console.write_string("└")
-    (width - 2).times fn (_) { @console.write_string("─") }
-    @console.write_string("┘")
+    @console.flush
   }
 }

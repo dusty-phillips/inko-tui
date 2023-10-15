@@ -1,6 +1,6 @@
 
-import std::test::Tests
-import tui::align::(Alignment)
+import std.test.Tests
+import tui.align.(Alignment, truncate)
 
 fn pub tests(t: mut Tests) {
   t.test('Can align left single line') fn (t) {
@@ -65,6 +65,11 @@ Hi", 15, "#")
     let aligned = Alignment.Center.align("Hello World", 5, "#")
 
     t.equal(aligned, "Hello World")
+  }
+
+  t.test("Truncate single line string") fn (t) {
+    let truncated = truncate("Hello World", 5, 3)
+    t.equal(truncated, "Hello")
   }
   
 }
