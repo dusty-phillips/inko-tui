@@ -32,18 +32,18 @@ impl Component[TextPanelProps] for TextPanel {
     let padding_rows_above = padding_rows_float.floor.to_int
     let padding_rows_below = padding_rows_float.ceil.to_int
 
-    context.console.move(Cursor.MoveTo(context.x,context. y))
+    context.console.move(Cursor.MoveTo(context.x, context.y))
 
     context.console.write_string("┌")
     (context.width - 2).times fn (_) { context.console.write_string("─") }
     context.console.write_string("┐")
-    context.console.move(Cursor.MoveTo(context.x + 1, context.y))
+    context.console.move(Cursor.MoveTo(context.x, context.y + 1))
 
     padding_rows_above.times fn (incr) {
       context.console.write_string("│")
       context.console.move(Cursor.Right(context.width - 2))
       context.console.write_string("│")
-      context.console.move(Cursor.MoveTo(context.x + 1 + incr, context.y))
+      context.console.move(Cursor.MoveTo(context.x, context.y + 1 + incr))
     }
 
     let mut count = 0
@@ -51,14 +51,14 @@ impl Component[TextPanelProps] for TextPanel {
       context.console.write_string("│")
       context.console.write_string(line)
       context.console.write_string("│")
-      context.console.move(Cursor.MoveTo(context.x + 1 + padding_rows_above + index, context.y))
+      context.console.move(Cursor.MoveTo(context.x, context.y + 1 + padding_rows_above + index))
     }
 
     padding_rows_below.times fn (incr) {
       context.console.write_string("│")
       context.console.move(Cursor.Right(context.width - 2))
       context.console.write_string("│")
-      context.console.move(Cursor.MoveTo(context.x + context.height - padding_rows_below + incr - 1, context.y))
+      context.console.move(Cursor.MoveTo(context.x, context.y + context.height - padding_rows_below + incr - 1))
     }
 
     context.console.write_string("└")

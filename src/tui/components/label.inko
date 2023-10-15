@@ -4,7 +4,7 @@ import console.ansi.(Cursor)
 
 # A label contains text and nothing else.
 #
-# TODO: Add props and style.
+# TODO: Add color and style.
 class pub LabelProps {
   let pub @text: String
 }

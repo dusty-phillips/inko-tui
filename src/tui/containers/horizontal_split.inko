@@ -1,0 +1,56 @@
+import std.cmp
+import tui.component(Component, RenderContext, Props)
+import console.ansi.(Cursor)
+
+# Contains the props for the left and right sides of a horizonally
+# split container.
+class pub HSplitProps[L: Props, R: Props] {
+  let pub @left_props: L
+  let pub @right_props: R
+}
+
+impl Props for HSplitProps {}
+
+# A Horizontally split container with two strongly typed children.
+# The children are supplied at construction and their type can never change.
+# The weight is a number between zero and one indicating what percentage of
+# columns should be given to the left child. Anything left will go to the
+# right child.
+class pub HSplit[LP: Props, RP: Props, L: Component[LP], R: Component[RP]] {
+  let @left_child: L
+  let @right_child: R
+  let @weight_of_left: Float
+  
+  fn pub static new(left_child: L, right_child: R, weight_of_left: Float) -> HSplit[LP, RP, L, R] {
+    HSplit {
+      @left_child = left_child,
+      @right_child = right_child,
+      @weight_of_left = cmp.min(weight_of_left, 1.0)
+    }
+  }
+}
+
+impl Component[HSplitProps[LP, RP]] for HSplit {
+
+  fn pub render(context: mut RenderContext, props: ref HSplitProps[LP, RP]) {
+    let left_cols = (context.width.to_float * @weight_of_left).ceil.to_int
+
+    let left_context = RenderContext {
+      @x = context.x,
+      @y = context.y,
+      @width = left_cols,
+      @height = context.height,
+      @console = context.console
+    }
+    let right_context = RenderContext {
+      @x = context.x + left_cols,
+      @y = context.y,
+      @width = context.width - left_cols,
+      @height = context.height,
+      @console = context.console
+    }
+
+    @left_child.render(left_context, props.left_props)
+    @right_child.render(right_context, props.right_props)
+  }
+}

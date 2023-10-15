@@ -2,7 +2,7 @@ import console
 
 # Marker trait for any class that can be used as props in a specific component.
 #
-# Note that there is only one base state, and nested componennts need to pass their
+# Note that there is only one base state, and nested components need to pass their
 # props to their children when rendering.
 trait pub Props {} 
 

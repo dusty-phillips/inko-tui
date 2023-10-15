@@ -130,7 +130,7 @@ class pub enum Cursor {
       case Right(count) -> "{count}C"
       case Left(count) -> "{count}D"
       case MoveToColumn(count) -> "{count+1}G"
-      case MoveTo(row, column) -> "{row+1};{column+1}H"
+      case MoveTo(column, row) -> "{row+1};{column+1}H"
     }
   }
 }
