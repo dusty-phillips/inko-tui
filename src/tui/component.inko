@@ -1,0 +1,35 @@
+import console
+
+# Marker trait for any class that can be used as props in a specific component.
+#
+# Note that there is only one base state, and nested componennts need to pass their
+# props to their children when rendering.
+trait pub Props {} 
+
+# Struct containing the render context for a given
+# iteration of a component.
+#
+# Width, height, x and y are all integers as you would
+# expect.
+class pub RenderContext {
+    let pub @width: Int
+    let pub @height: Int
+    let pub @x: Int
+    let pub @y: Int
+    let pub @console: mut console::Console
+}
+
+# Represent a Component that can take certain data as props.
+#
+# The rendering component MUST enforce that nothing is drawn
+# outside the context's bounding box.
+trait pub Component[T: Props] {
+    # Render the component to the context's console, ensuring that
+    # nothing is drawn outside the context's bounding box.
+    fn pub render(context: mut RenderContext, props: ref T)
+}
+
+
+ 
+
+

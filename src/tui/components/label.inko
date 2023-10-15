@@ -1,0 +1,41 @@
+import tui::component(Component, RenderContext, Props)
+import console::ansi::(Cursor)
+
+
+# A label contains text and nothing else.
+#
+# TODO: Add props and style.
+class pub LabelProps {
+  let pub @text: String
+}
+
+impl Props for LabelProps {}
+
+
+# A very simple lable that can render its text
+# left aligned within the bounding box.
+#
+# If the label is too long for the width, it is
+# truncated.
+# If the height is zero, nothing is rendered.
+class pub Label { }
+
+impl Label {
+  fn pub static new() -> Label {
+    Label {}
+  }
+}
+
+impl Component[LabelProps] for Label {
+  fn pub render(context: mut RenderContext, props: ref LabelProps) {
+    if context.height <= 0 or context.width <= 0 {
+      return
+    }
+
+    let text = props.text.slice(0, context.width)
+
+    context.console.move(Cursor.MoveTo(context.x, context.y))
+    context.console.write_string(text)
+  }
+}
+
