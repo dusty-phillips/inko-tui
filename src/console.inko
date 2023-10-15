@@ -1,8 +1,9 @@
-import std::sys::(Command, Stream)
-import std::io::(Write, Error)
-import std::stdio::(STDOUT)
+import std.sys.(Command, Stream)
+import std.io.(Write, Error)
+import std.stdio.(STDOUT)
+import std.int.Format
 
-import console::ansi
+import console.ansi
 
 class pub ConsoleDimensions {
   let pub @width: Int
@@ -34,8 +35,8 @@ class pub Console {
     let width_string = dimensions.next.unwrap_or("80").trim
     let height_string = dimensions.next.unwrap_or("25").trim
 
-    let width = Int.from_base10(width_string).unwrap
-    let height = Int.from_base10(height_string).unwrap
+    let width = Int.parse(width_string, Format.Decimal).unwrap
+    let height = Int.parse(height_string, Format.Decimal).unwrap
 
     ConsoleDimensions {
       @width = width,
@@ -48,38 +49,38 @@ class pub Console {
   }
 
   # Set the foreground color for subsequent writes to the console.
-  fn pub mut foreground(color: ansi::Color) {
+  fn pub mut foreground(color: ansi.Color) {
     self.escape("38;{color.to_ansi}")  
   }
   
   # Set the background color for subsequent writes to the console.
-  fn pub mut background(color: ansi::Color) {
+  fn pub mut background(color: ansi.Color) {
     self.escape("48;{color.to_ansi}")  
   }
 
   # Set the Underline style and color
-  fn pub mut underline(style: ansi::Underline, color: ansi::Color) {
+  fn pub mut underline(style: ansi.Underline, color: ansi.Color) {
     self.escape("58;{color.to_ansi};{style.to_ansi}")
   }
 
   # Set bold, dim, or normal intensity
   # Note this false trichotomy is kind of a legacy from CRT days
-  fn pub mut brightness(style: ansi::Brightness) {
+  fn pub mut brightness(style: ansi.Brightness) {
     self.escape(style.to_ansi)
   }
 
   # Set italic, inverted, or strike style
-  fn pub mut style(style: ansi::Style) {
+  fn pub mut style(style: ansi.Style) {
     self.escape(style.to_ansi)
   }
 
   # Issue a cursor control sequence
-  fn pub mut move(cursor: ansi::Cursor) {
+  fn pub mut move(cursor: ansi.Cursor) {
     self.stdout.write_string("\e[{cursor.to_ansi}")
   }
 
   # Issue a clear screen control sequence
-  fn pub mut clear(clear: ansi::Clear) {
+  fn pub mut clear(clear: ansi.Clear) {
     self.stdout.write_string("\e[{clear.to_ansi}")
   }
 

@@ -1,5 +1,5 @@
-import tui::component(Component, RenderContext, Props)
-import console::ansi::(Cursor)
+import tui.component(Component, RenderContext, Props)
+import console.ansi.(Cursor)
 
 
 # A label contains text and nothing else.
@@ -32,7 +32,7 @@ impl Component[LabelProps] for Label {
       return
     }
 
-    let text = props.text.slice(0, context.width)
+    let text = props.text.substring(0, context.width)
 
     context.console.move(Cursor.MoveTo(context.x, context.y))
     context.console.write_string(text)

@@ -16,7 +16,7 @@ class pub RenderContext {
     let pub @height: Int
     let pub @x: Int
     let pub @y: Int
-    let pub @console: mut console::Console
+    let pub @console: mut console.Console
 }
 
 # Represent a Component that can take certain data as props.

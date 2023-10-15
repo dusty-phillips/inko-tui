@@ -1,7 +1,7 @@
-import console::(Console)
-import console::ansi::(Cursor, Clear)
-import tui::align::(Alignment)
-import tui::component::(RenderContext, Props, Component)
+import console.(Console)
+import console.ansi.(Cursor, Clear)
+import tui.align.(Alignment)
+import tui.component.(RenderContext, Props, Component)
 
 
 class pub Tui {
@@ -20,10 +20,10 @@ class pub Tui {
   fn pub mut render[T: Props](component: Component[T], props: T) {
     let screen_size = @console.size
     let context = RenderContext {
-      @width = screen_size.width
-      @height = screen_size.height
-      @x = 0
-      @y = 0
+      @width = screen_size.width,
+      @height = screen_size.height,
+      @x = 0,
+      @y = 0,
       @console = @console
     }
     component.render(context, props)
@@ -35,7 +35,7 @@ class pub Tui {
   fn pub mut panel(x: Int, y: Int, width: Int, height: Int, contents: String, alignment: Alignment) {
     let line_count = contents.split("\n").count
     let longest_line_length = contents.split("\n").reduce(0) fn (longest, line) {
-      let length = line.characters.count
+      let length = line.chars.count
       if (length > longest) {
         length
       } else {

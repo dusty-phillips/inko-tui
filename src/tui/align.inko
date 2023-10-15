@@ -1,4 +1,4 @@
-import std::string::(StringBuffer)
+import std.string.(StringBuffer)
 
 class pub enum Alignment {
   case Left
@@ -17,7 +17,7 @@ class pub enum Alignment {
   # are at least `width` characters in length.
   # If any lines are longer than width they will spill over.
   fn left(string: String, width: Int, fill_char: String) -> String {
-    if fill_char.characters.count != 1 {
+    if fill_char.chars.count != 1 {
       panic("Padding char must be exactly one character")
     }
 
@@ -42,7 +42,7 @@ class pub enum Alignment {
   # are at least `width` characters in length.
   # If any lines are longer than width they will spill over.
   fn right(string: String, width: Int, fill_char: String) -> String {
-    if fill_char.characters.count != 1 {
+    if fill_char.chars.count != 1 {
       panic("Padding char must be exactly one character")
     }
 
@@ -67,14 +67,14 @@ class pub enum Alignment {
   # and spill over.
 
   fn center(string: String, width: Int, fill_char: String) -> String {
-    if fill_char.characters.count != 1 {
+    if fill_char.chars.count != 1 {
       panic("Padding char must be exactly one character")
     }
 
     let buffer = StringBuffer.new
 
     string.split("\n").each fn (line) {
-      let length = line.characters.count
+      let length = line.chars.count
       if (width < length) {
         buffer.push(line)
       } else {
