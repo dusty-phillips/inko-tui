@@ -1,4 +1,4 @@
-import console.(Console)
+import console.(Console, ConsoleDimensions)
 import console.ansi.(Cursor, Clear)
 import tui.align.(Alignment)
 import tui.component.(RenderContext, Props, Component)
@@ -6,10 +6,22 @@ import tui.component.(RenderContext, Props, Component)
 
 class pub App {
   let pub @console: Console
+  let @size: ConsoleDimensions
 
   fn pub static new -> App {
+    let console = Console.new
+    let size = console.size
     App {
-      @console = Console.new
+      @console = Console.new,
+      @size = size
+
+    }
+  }
+
+  fn pub static fixedSize(size: ConsoleDimensions) -> App {
+    App {
+      @console = Console.new,
+      @size = size
     }
   }
 
@@ -18,10 +30,9 @@ class pub App {
   }
 
   fn pub mut render[T: Props](component: Component[T], props: T) {
-    let screen_size = @console.size
     let context = RenderContext {
-      @width = screen_size.width,
-      @height = screen_size.height,
+      @width = @size.width,
+      @height = @size.height,
       @x = 0,
       @y = 0,
       @console = @console
