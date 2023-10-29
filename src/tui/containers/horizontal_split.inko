@@ -1,5 +1,5 @@
 import std.cmp
-import tui.component(Component, RenderContext, Props)
+import tui.component.(Component, RenderContext, Props)
 import console.ansi.(Cursor)
 
 # Contains the props for the left and right sides of a horizonally

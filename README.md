@@ -20,6 +20,16 @@ I've only tested this in the Kitty Terminal for several reasons:
 This is super early release alpha software. Most things don't work. Things that do work probably don't work properly.
 Things that do work properly on Kitty probably don't work properly on other terminals.
 
+## Install
+
+Use the Inko package manager:
+
+```
+inko pkg init
+inko pkg add git@github.com:dusty-phillips/inko-tui.git 0.0.1
+inko pkg sync
+```
+
 ## Console
 
 This library ships with a `console::Console` class that you may want to think of as

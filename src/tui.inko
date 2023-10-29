@@ -4,11 +4,11 @@ import tui.align.(Alignment)
 import tui.component.(RenderContext, Props, Component)
 
 
-class pub Tui {
+class pub App {
   let pub @console: Console
 
-  fn pub static new -> Tui {
-    Tui {
+  fn pub static new -> App {
+    App {
       @console = Console.new
     }
   }
